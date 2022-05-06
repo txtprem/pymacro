@@ -1,49 +1,32 @@
+import os
+import glob
+import csv
+from xlsxwriter.workbook import Workbook
+
 import os, os.path
 import win32com.client
 import sys
 import openpyxl as xl
 import shutil
 import time
+import pandas as pd
 
+# def csv_2_excel():
+#     for csvfile in glob.glob(os.path.join(sys.argv[1].split('.')[0] + '.csv')):
+#         # workbook = Workbook(csvfile[:-4] + '.xlsx')
+#         workbook = Workbook(csvfile.split('.')[0] + '.xlsx')
+#         worksheet = workbook.add_worksheet()
+#         with open(csvfile, 'rt', encoding='utf8') as f:
+#             reader = csv.reader(f)
+#             for r, row in enumerate(reader):
+#                 for c, col in enumerate(row):
+#                     worksheet.write(r, c, col)
+#         workbook.close()
 
-def old():
-    if os.path.exists("D:\\excle_macro_temp\\prem_macro.xlsm"):
-        xl=win32com.client.Dispatch("Excel.Application")
-        xl.DisplayAlerts = False
-        wb = xl.Workbooks.Open(os.path.abspath(sys.argv[1]))
-        excel_name = os.path.basename(sys.argv[1])
-        os.path.expanduser("D:\\excle_macro_temp\\m4.xlsm")
-        try:
-            # Note: Macro_1 should not be run since it was fixed to file path of Andrea
-            #       real macro from 2 to 7
-            # xl.Application.Run("m4.xlsm!Module1.Macro_1")
+def csv_2_excel_pandas():
+    dframe = pd.read_csv(os.path.join(sys.argv[1].split('.')[0] + '.csv'), float_precision='round_trip')
+    dframe.to_excel(os.path.join(sys.argv[1].split('.')[0] + '.xlsx'), index=False)
 
-            # xl.Application.Run("m4.xlsm!Module1.Macro_2")
-            xl.Application.Run("m4.xlsm!Module1.Macro_3")
-            # xl.Application.Run("m4.xlsm!Module1.Macro_4")
-            # xl.Application.Run("m4.xlsm!Module1.Macro_5")
-            # xl.Application.Run("m4.xlsm!Module1.Macro_6")
-            # xl.Application.Run("m4.xlsm!Module1.Macro_7")
-
-            # NOT WORK BELOW!!!!
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_2")
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_3")
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_4")
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_5")
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_6")
-            # xl.Application.Run("D:\\excle_macro_temp\\m4.xlsm!Module1.Macro_7")
-        except:
-            sys.stderr.write("Error raised when run macro file, exit...")
-            xl.Application.Quit()  # Comment this out if your excel script closes
-            del xl
-            sys.exit(1)
-
-        wb.SaveAs(Filename="D:\\excle_macro_temp\\" + "macro_" + excel_name)
-        # wb.SaveAs(Filename="D:\\excle_macro_temp\\ciao.xlsx")
-
-        wb.Close()
-        xl.Quit() # Comment this out if your excel script closes
-        del xl
 
 def prepare_new_xlsm():
     excel_name = os.path.basename(sys.argv[1]).split('.')[0]
@@ -110,13 +93,9 @@ def main(excel_name):
         xl.Quit()  # Comment this out if your excel script closes
         del xl
 
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # "D:\excle_macro_temp\RelStat_TXTGROUP_LOI20225417510.xlsx"
-    # old()
-    # try_v()
     work_folder = "D:\\excle_macro_temp"
+    csv_2_excel_pandas()
     excel_n = prepare_new_xlsm()
     main(excel_n)
-
