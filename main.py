@@ -3,6 +3,8 @@ import win32com.client
 import sys
 import openpyxl as xl
 import shutil
+import time
+
 
 def old():
     if os.path.exists("D:\\excle_macro_temp\\prem_macro.xlsm"):
@@ -101,8 +103,8 @@ def main(excel_name):
             del xl
             sys.exit(1)
 
-        wb.SaveAs(Filename="D:\\excle_macro_temp\\" + "macro_" + excel_name + ".xlsm")
-        # wb.SaveAs(Filename="D:\\excle_macro_temp\\ciao.xlsx")
+        # wb.SaveAs(Filename="D:\\excle_macro_temp\\" + excel_name + ".xlsm")
+        wb.SaveAs(Filename="D:\\STM\\STM-PREM\\PremModule\\produced_xlsm\\" + excel_name + ".xlsm")
 
         wb.Close()
         xl.Quit()  # Comment this out if your excel script closes
